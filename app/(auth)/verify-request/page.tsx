@@ -14,8 +14,9 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { authClient } from "@/lib/auth-client";
+import { Loader } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
 import { toast } from "sonner";
 
@@ -24,6 +25,7 @@ const VerifyRequest = () => {
   const [emailPending, startEmailTransition] = useTransition();
   const params = useSearchParams();
   const email = params.get("email");
+  const isOTPCompleted = otp.length === 6;
 
   const router = useRouter();
 
@@ -35,6 +37,10 @@ const VerifyRequest = () => {
         fetchOptions: {
           onSuccess: () => {
             toast.success("Email verified!");
+            router.push("/");
+          },
+          onError: () => {
+            toast.error("Error verifying Email/OTP");
           },
         },
       });
@@ -76,7 +82,20 @@ const VerifyRequest = () => {
           </p>
         </div>
 
-        <Button className="w-full">Verify Account</Button>
+        <Button
+          className="w-full"
+          onClick={verifyOtp}
+          disabled={emailPending || !isOTPCompleted}
+        >
+          {emailPending ? (
+            <>
+              <Loader className="mr-2 animate-spin" />
+              <span>Verifying...</span>
+            </>
+          ) : (
+            "Verify Account"
+          )}
+        </Button>
       </CardContent>
     </Card>
   );
