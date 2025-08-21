@@ -1,7 +1,20 @@
 import { z } from "zod";
 
-export const courseLevels = ["Beginner", "Intermediate", "Advanced"];
-export const courseStatus = ["Draft", "Published", "Archived"];
+export const courseLevels = ["Beginner", "Intermediate", "Advanced"] as const;
+export const courseStatus = ["Draft", "Published", "Archived"] as const;
+
+export const courseCategories = [
+  "Development",
+  "Business",
+  "Finance",
+  "IT and Software",
+  "Office Productivity",
+  "Marketing",
+  "Personal Development",
+  "Health and Fitness",
+  "Music",
+  "Teaching and Academics",
+] as const;
 
 export const courseSchema = z.object({
   title: z
@@ -24,7 +37,9 @@ export const courseSchema = z.object({
   level: z.enum(courseLevels, {
     message: "Course level is required",
   }),
-  category: z.string(),
+  category: z.enum(courseCategories, {
+    message: "Category is required",
+  }),
   smallDescription: z
     .string()
     .min(3, { message: "Small description must be at least 3 characters long" })
@@ -38,3 +53,6 @@ export const courseSchema = z.object({
     message: "Status is required",
   }),
 });
+
+export type CourseSchemaType = z.infer<typeof courseSchema>;
+export type CourseSchemaInput = z.input<typeof courseSchema>;
