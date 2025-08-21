@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-[backdrop-filter]:bg-background/60">
-      <div className="container flex min-h-16 items-center mx-auto px-4 md:p-6 lg:px-8">
+      <div className="container flex min-h-10 items-center mx-auto px-4 md:p-6 lg:px-8">
         <Link href={"/"} className="space-x-2 mr-2">
           <h1 className="flex items-center gap-2">
             <span className="text-4xl font-bold">BS</span> -{" "}
@@ -22,7 +22,7 @@ const Navbar = () => {
           </h1>
         </Link>
 
-        <div className="h-16 w-px bg-white mx-4 self-stretch"></div>
+        <div className="h-10 w-px dark:bg-white bg-black mx-4 self-stretch"></div>
 
         <nav className="hidden md:flex md:flex-1 md:items-center md:justify-between">
           <div className="flex items-center space-x-4">
