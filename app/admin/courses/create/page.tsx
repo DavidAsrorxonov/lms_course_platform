@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowLeftIcon, Sparkle } from "lucide-react";
+import { ArrowLeftIcon, PlusIcon, Sparkle } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -298,6 +298,10 @@ const CourseCreationPage = () => {
                   </FormItem>
                 )}
               />
+
+              <Button>
+                Create Course <PlusIcon className="ml-1" size={16} />
+              </Button>
             </form>
           </Form>
         </CardContent>
