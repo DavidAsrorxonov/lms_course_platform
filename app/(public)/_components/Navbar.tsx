@@ -41,7 +41,11 @@ const Navbar = () => {
             <ThemeToggle />
 
             {isPending ? null : session ? (
-              <UserDropdown />
+              <UserDropdown
+                name={session?.user.name}
+                email={session?.user.email}
+                image={session?.user.image || ""}
+              />
             ) : (
               <>
                 <Link
