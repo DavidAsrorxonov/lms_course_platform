@@ -14,6 +14,6 @@ export const navItems: NavItem[] = [
   },
   {
     name: "Dashboard",
-    href: "/dashboard",
+    href: "/admin",
   },
 ];
