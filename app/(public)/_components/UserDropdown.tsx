@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useSignOut } from "@/hooks/use-signout";
 import { authClient } from "@/lib/auth-client";
 import {
   BookOpen,
@@ -28,21 +29,7 @@ interface iAppProps {
 }
 
 export default function UserDropdown({ name, email, image }: iAppProps) {
-  const router = useRouter();
-
-  const signOut = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          toast.success("Signed out successfully");
-          router.push("/");
-        },
-        onError: () => {
-          toast.error("Error signing out");
-        },
-      },
-    });
-  };
+  const handleSignOut = useSignOut().handleSignOut;
 
   return (
     <DropdownMenu>
@@ -94,7 +81,7 @@ export default function UserDropdown({ name, email, image }: iAppProps) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={signOut}>
+        <DropdownMenuItem onClick={handleSignOut}>
           <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
           <span>Logout</span>
         </DropdownMenuItem>
