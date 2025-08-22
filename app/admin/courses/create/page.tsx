@@ -39,6 +39,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import RichTextEditor from "@/components/rich-text-editor/Editor";
 
 const CourseCreationPage = () => {
   const form = useForm<CourseSchemaInput>({
@@ -150,11 +151,13 @@ const CourseCreationPage = () => {
                   <FormItem className="w-full">
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea
+                      {/* <Textarea
                         placeholder="Description"
                         {...field}
                         className="min-h-[120px]"
-                      />
+                      /> */}
+
+                      <RichTextEditor field={field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
