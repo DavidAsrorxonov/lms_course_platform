@@ -1,5 +1,8 @@
+import { env } from "@/lib/env";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { v4 as uuidv4 } from "uuid";
 
 export const fileUploadSchema = z.object({
   fileName: z.string().min(1, { message: "File name is required" }),
@@ -22,5 +25,14 @@ export const POST = async (request: Request) => {
     }
 
     const { fileName, contentType, size } = validation.data;
+
+    const uniqueKey = `${uuidv4()}-${fileName}}`;
+
+    const command = new PutObjectCommand({
+      Bucket: env.NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES,
+      ContentType: contentType,
+      ContentLength: size,
+      Key: uniqueKey,
+    });
   } catch (error) {}
 };
