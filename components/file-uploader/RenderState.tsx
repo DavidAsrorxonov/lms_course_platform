@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
-import { CloudUploadIcon, ImageIcon } from "lucide-react";
+import { CloudUploadIcon, ImageIcon, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 export const RenderEmptyState = ({
   isDragActive,
@@ -43,5 +44,38 @@ export const RenderErrorState = () => {
         Click or drag a file to retry
       </Button>
     </div>
+  );
+};
+
+export const RenderUploadedState = ({ previewUrl }: { previewUrl: string }) => {
+  return (
+    <div>
+      <Image
+        src={previewUrl}
+        alt="uploaded File"
+        fill
+        className="object-contain p-2"
+      />
+
+      <Button
+        variant={"destructive"}
+        size={"icon"}
+        className={cn("absolute top-4 right-4")}
+      >
+        <XIcon className="size-4" />
+      </Button>
+    </div>
+  );
+};
+
+export const RenderUploadingState = ({
+  progress,
+  file,
+}: {
+  progress: number;
+  file: File;
+}) => {
+  return (
+    <div className="text-center flex justify-center items-center flex-col"></div>
   );
 };
