@@ -76,6 +76,14 @@ export const RenderUploadingState = ({
   file: File;
 }) => {
   return (
-    <div className="text-center flex justify-center items-center flex-col"></div>
+    <div className="text-center flex justify-center items-center flex-col">
+      <p>{progress}</p>
+
+      <p className="mt-2 text-sm font-medium">Uploading...</p>
+
+      <p className="mt-1 text-sx text-muted-foreground truncate max-w-sm">
+        {file.name}
+      </p>
+    </div>
   );
 };

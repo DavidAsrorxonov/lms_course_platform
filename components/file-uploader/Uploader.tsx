@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
@@ -8,6 +8,7 @@ import {
   RenderEmptyState,
   RenderErrorState,
   RenderUploadedState,
+  RenderUploadingState,
 } from "./RenderState";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
@@ -118,25 +119,32 @@ const Uploader = () => {
     }
   };
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    // do smth
-    if (acceptedFiles.length > 0) {
-      const file = acceptedFiles[0];
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      // do smth
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0];
 
-      setFileState({
-        file: file,
-        uploading: false,
-        progress: 0,
-        objectUrl: URL.createObjectURL(file),
-        error: false,
-        id: uuidv4(),
-        isDeleting: false,
-        fileType: "image",
-      });
+        if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
+          URL.revokeObjectURL(fileState.objectUrl);
+        }
 
-      uploadFile(file);
-    }
-  }, []);
+        setFileState({
+          file: file,
+          uploading: false,
+          progress: 0,
+          objectUrl: URL.createObjectURL(file),
+          error: false,
+          id: uuidv4(),
+          isDeleting: false,
+          fileType: "image",
+        });
+
+        uploadFile(file);
+      }
+    },
+    [fileState.objectUrl]
+  );
 
   const rejectedFiles = (fileRejection: FileRejection[]) => {
     if (fileRejection.length) {
@@ -159,7 +167,12 @@ const Uploader = () => {
 
   const renderContent = () => {
     if (fileState.uploading) {
-      return <h1>Uploading...</h1>;
+      return (
+        <RenderUploadingState
+          file={fileState.file as File}
+          progress={fileState.progress}
+        />
+      );
     }
 
     if (fileState.error) {
@@ -172,6 +185,14 @@ const Uploader = () => {
 
     return <RenderEmptyState isDragActive={isDragActive} />;
   };
+
+  useEffect(() => {
+    return () => {
+      if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
+        URL.revokeObjectURL(fileState.objectUrl);
+      }
+    };
+  }, [fileState.objectUrl]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
