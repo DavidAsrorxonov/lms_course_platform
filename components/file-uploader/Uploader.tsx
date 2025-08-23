@@ -31,7 +31,7 @@ const Uploader = () => {
     fileType: "image",
   });
 
-  const uploadFile = (file: File) => {
+  const uploadFile = async (file: File) => {
     setFileState((prev) => ({
       ...prev,
       uploading: true,
@@ -39,7 +39,79 @@ const Uploader = () => {
     }));
 
     try {
-    } catch (error) {}
+      const presignedResponse = await fetch("/api/s3/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fileName: file.name,
+          contentType: file.type,
+          size: file.size,
+          isImage: true,
+        }),
+      });
+
+      if (!presignedResponse.ok) {
+        toast.error("Failed to get a presigned URL.");
+
+        setFileState((prev) => ({
+          ...prev,
+          uploading: false,
+          progress: 0,
+          error: true,
+        }));
+
+        return;
+      }
+
+      const { presignedUrl, key } = await presignedResponse.json();
+
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentageCompleted = (event.loaded / event.total) * 100;
+
+            setFileState((prev) => ({
+              ...prev,
+              progress: Math.round(percentageCompleted),
+            }));
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status === 200 || xhr.status === 204) {
+            setFileState((prev) => ({
+              ...prev,
+              progress: 100,
+              uploading: false,
+              key: key,
+            }));
+
+            toast.success("File uploaded successfully");
+
+            resolve();
+          } else {
+            reject(new Error("Upload failed"));
+          }
+        };
+        xhr.onerror = () => {
+          reject(new Error("Upload failed"));
+        };
+
+        xhr.open("PUT", presignedUrl);
+        xhr.setRequestHeader("Content-Type", file.type);
+        xhr.send(file);
+      });
+    } catch (error) {
+      toast.error("Something went wrong");
+      setFileState((prev) => ({
+        ...prev,
+        progress: 0,
+        error: true,
+        uploading: false,
+      }));
+    }
   };
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -57,6 +129,8 @@ const Uploader = () => {
         isDeleting: false,
         fileType: "image",
       });
+
+      uploadFile(file);
     }
   }, []);
 
@@ -77,6 +151,22 @@ const Uploader = () => {
         toast.error("File size exceeds the limit. The limit is 5 MBs.");
       }
     }
+  };
+
+  const renderContent = () => {
+    if (fileState.uploading) {
+      return <h1>Uploading...</h1>;
+    }
+
+    if (fileState.error) {
+      return <RenderErrorState />;
+    }
+
+    if (fileState.objectUrl) {
+      return <h1>Uploaded file</h1>;
+    }
+
+    return <RenderEmptyState isDragActive={isDragActive} />;
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -102,8 +192,7 @@ const Uploader = () => {
     >
       <CardContent className="flex items-center justify-center h-full w-full p-4">
         <input {...getInputProps()} />
-        <RenderEmptyState isDragActive={isDragActive} />
-        {/* <RenderErrorState /> */}
+        {renderContent()}
       </CardContent>
     </Card>
   );
