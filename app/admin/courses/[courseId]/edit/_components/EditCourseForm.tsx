@@ -309,9 +309,7 @@ const EditCourseForm = ({ data }: iAppProps) => {
               <Loader2 className="animate-spin ml-1" />
             </>
           ) : (
-            <>
-              Update Course <PlusIcon className="ml-1" size={16} />
-            </>
+            <>Update Course</>
           )}
         </Button>
       </form>
