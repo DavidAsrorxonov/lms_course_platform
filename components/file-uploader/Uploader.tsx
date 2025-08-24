@@ -274,7 +274,7 @@ const Uploader = () => {
         "relative border-2 border-dashed transition-colors duration-200 w-full h-64",
         isDragActive
           ? "border-primary bg-primary/10"
-          : "border-border hover:border-primary"
+          : "border-border hover:border-primary hover:bg-primary/5"
       )}
     >
       <CardContent className="flex items-center justify-center h-full w-full p-4">
