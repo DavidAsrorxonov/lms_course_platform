@@ -164,6 +164,7 @@ const Uploader = () => {
       });
 
       if (!response.ok) {
+        console.log(response);
         toast.error("Failed to remove file from storage");
         setFileState((prev) => ({
           ...prev,
@@ -234,7 +235,13 @@ const Uploader = () => {
     }
 
     if (fileState.objectUrl) {
-      return <RenderUploadedState previewUrl={fileState.objectUrl} />;
+      return (
+        <RenderUploadedState
+          previewUrl={fileState.objectUrl}
+          handleRemoveFile={handleRemoveFile}
+          isDeleting={fileState.isDeleting}
+        />
+      );
     }
 
     return <RenderEmptyState isDragActive={isDragActive} />;
@@ -257,6 +264,7 @@ const Uploader = () => {
     multiple: false,
     maxSize: 5 * 1024 * 1024, // 5MB calculation
     onDropRejected: rejectedFiles,
+    disabled: fileState.uploading || !!fileState.objectUrl,
   });
 
   return (

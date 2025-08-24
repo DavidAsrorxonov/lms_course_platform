@@ -7,7 +7,7 @@ export const DELETE = async (request: Request) => {
   try {
     const body = await request.json();
 
-    const key = body.key();
+    const key = body.key;
 
     if (!key) {
       return NextResponse.json(
