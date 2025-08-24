@@ -2,6 +2,7 @@ import "server-only";
 import { requireAdmin } from "./require-admin";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
+import { TruckElectric } from "lucide-react";
 
 export const AdminGetCourse = async (id: string) => {
   await requireAdmin();
@@ -22,6 +23,23 @@ export const AdminGetCourse = async (id: string) => {
       fileKey: true,
       slug: true,
       category: true,
+      chapter: {
+        select: {
+          id: true,
+          title: true,
+          position: true,
+          lessons: {
+            select: {
+              id: true,
+              title: true,
+              description: true,
+              thumbnailKey: true,
+              position: true,
+              videoKey: true,
+            },
+          },
+        },
+      },
     },
   });
 

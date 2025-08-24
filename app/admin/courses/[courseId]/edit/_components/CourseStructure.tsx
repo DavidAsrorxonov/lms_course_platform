@@ -1,8 +1,10 @@
 "use client";
 
+import { AdminCourseSingularType } from "@/app/data/admin/admin-get-course";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DndContext,
+  DraggableSyntheticListeners,
   KeyboardSensor,
   PointerSensor,
   rectIntersection,
@@ -17,10 +19,37 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 
-const CourseStructure = () => {
-  const [items, setItems] = useState(["1", "2", "3"]);
+interface iAppProps {
+  data: AdminCourseSingularType;
+}
+
+interface SortableItemProps {
+  id: string;
+  children: (listener: DraggableSyntheticListeners) => ReactNode;
+  className?: string;
+  data?: {
+    type: "chapter" | "lesson";
+    chapterId?: string;
+  };
+}
+
+const CourseStructure = ({ data }: iAppProps) => {
+  const initialItems =
+    data?.chapter.map((chapter) => ({
+      id: chapter.id,
+      title: chapter.title,
+      order: chapter.position,
+      isOpen: true, // default chapter to open
+      lessons: chapter.lessons.map((lesson) => ({
+        id: lesson.id,
+        title: lesson.title,
+        order: lesson.position,
+      })),
+    })) || [];
+
+  const [items, setItems] = useState(initialItems);
 
   function SortableItem(props) {
     const { attributes, listeners, setNodeRef, transform, transition } =
@@ -70,8 +99,8 @@ const CourseStructure = () => {
         </CardHeader>
         <CardContent>
           <SortableContext strategy={verticalListSortingStrategy} items={items}>
-            {items.map((id) => (
-              <SortableItem key={id} id={id} />
+            {items.map((item) => (
+              <SortableItem key={item.id}></SortableItem>
             ))}
           </SortableContext>
         </CardContent>
