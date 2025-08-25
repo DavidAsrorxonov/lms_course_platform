@@ -86,6 +86,8 @@ export const ReorderLessons = async (
   lessons: { id: string; position: number }[],
   courseId: string
 ): Promise<ApiResponse> => {
+  await requireAdmin();
+
   try {
     if (!lessons || lessons.length === 0) {
       return {
@@ -126,6 +128,8 @@ export const ReorderChapters = async (
   courseId: string,
   chapters: { id: string; position: number }[]
 ): Promise<ApiResponse> => {
+  await requireAdmin();
+
   try {
     if (!chapters || chapters.length === 0) {
       return {
