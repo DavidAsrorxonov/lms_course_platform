@@ -36,6 +36,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
+import { ReorderLessons } from "../actions";
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -203,7 +204,24 @@ const CourseStructure = ({ data }: iAppProps) => {
           id: lesson.id,
           position: lesson.order,
         }));
+
+        const reorderLessonsPromise = () =>
+          ReorderLessons(chapterId, lessonsToUpdate, courseId);
+
+        toast.promise(reorderLessonsPromise(), {
+          loading: "Reordering lessons...",
+          success: (result) => {
+            if (result.status === "success") return result.message;
+            throw new Error(result.message);
+          },
+          error: () => {
+            setItems(previousItems);
+            return "Failed to reorder the lessons";
+          },
+        });
       }
+
+      return;
     }
   }
 
