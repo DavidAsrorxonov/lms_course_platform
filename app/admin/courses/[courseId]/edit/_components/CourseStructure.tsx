@@ -38,6 +38,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { ReorderChapters, ReorderLessons } from "../actions";
 import NewChapterModal from "./NewChapterModal";
+import NewLessonModal from "./NewLessonModal";
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -385,9 +386,14 @@ const CourseStructure = ({ data }: iAppProps) => {
                           </SortableContext>
 
                           <div className="p-2">
-                            <Button variant={"outline"} className="w-full">
-                              Create a new lesson
-                            </Button>
+                            <div className="w-full">
+                              {data && (
+                                <NewLessonModal
+                                  chapterId={item.id}
+                                  courseId={data.id}
+                                />
+                              )}
+                            </div>
                           </div>
                         </div>
                       </CollapsibleContent>

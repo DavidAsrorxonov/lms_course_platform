@@ -18,17 +18,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { tryCatch } from "@/hooks/try-catch";
-import {
-  chapterSchema,
-  ChapterSchemaInput,
-  lessonSchema,
-  LessonSchemaInput,
-} from "@/lib/zodSchemas";
+import { lessonSchema, LessonSchemaInput } from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { CreateChapter } from "../actions";
+import { CreateLesson } from "../actions";
 import { toast } from "sonner";
 
 const NewLessonModal = ({
@@ -52,7 +47,7 @@ const NewLessonModal = ({
 
   const onSubmit = async (values: LessonSchemaInput) => {
     startTransition(async () => {
-      const { data: result, error } = await tryCatch(CreateChapter(values));
+      const { data: result, error } = await tryCatch(CreateLesson(values));
 
       if (error) {
         toast.error("An unexpected error occurred. Please try again");
@@ -76,7 +71,7 @@ const NewLessonModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant={"outline"} size={"sm"} className="gap-2">
+        <Button variant={"outline"} className="w-full justify-center gap-1">
           <Plus className="size-4" />
           New Lesson
         </Button>
