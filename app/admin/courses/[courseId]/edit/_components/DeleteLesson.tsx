@@ -66,7 +66,9 @@ const DeleteLessonModal = ({
 
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <Button>Delete</Button>
+          <Button onClick={onSubmit} disabled={isPending}>
+            {isPending ? "Deleting..." : "Delete"}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
