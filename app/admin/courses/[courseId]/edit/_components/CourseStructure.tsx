@@ -35,6 +35,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { toast } from "sonner";
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -100,9 +101,45 @@ const CourseStructure = ({ data }: iAppProps) => {
 
     const activeId = active.id;
     const overId = over.id;
-    const activeType = active.data.current.type as "chapter" | "lesson";
-    const overType = over.data.current.type as "chapter" | "lesson";
+    const activeType = active.data.current?.type as "chapter" | "lesson";
+    const overType = over.data.current?.type as "chapter" | "lesson";
     const courseId = data?.id;
+
+    if (activeType === "chapter") {
+      let targetChapterId = null;
+
+      if (overType === "chapter") {
+        targetChapterId = overId;
+      } else if (overType === "lesson") {
+        targetChapterId = over.data.current?.chapterId ?? null;
+      }
+
+      if (!targetChapterId) {
+        toast.error("Could not determine the chapter for reordering");
+        return;
+      }
+
+      const oldIndex = items.findIndex((item) => item.id === activeId);
+      const newIndex = items.findIndex((item) => item.id === targetChapterId);
+
+      if (oldIndex === -1 || newIndex === -1) {
+        toast.error("Could not determine the index for reordering");
+        return;
+      }
+
+      const reorderedLocalChapters = arrayMove(items, oldIndex, newIndex);
+
+      const updatedChaptersForState = reorderedLocalChapters.map(
+        (chapter, index) => ({
+          ...chapter,
+          order: index + 1,
+        })
+      );
+
+      const previousItems = [...items];
+
+      setItems(updatedChaptersForState);
+    }
   }
 
   const toggleChapter = (chapterId: string) => {
