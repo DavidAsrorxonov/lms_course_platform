@@ -25,7 +25,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import {
   ChevronDown,
   ChevronRight,
@@ -67,6 +67,26 @@ const CourseStructure = ({ data }: iAppProps) => {
     })) || [];
 
   const [items, setItems] = useState(initialItems);
+
+  useEffect(() => {
+    setItems((prevItems) => {
+      const updatedItems =
+        data?.chapter.map((chapter) => ({
+          id: chapter.id,
+          title: chapter.title,
+          order: chapter.position,
+          isOpen:
+            prevItems.find((item) => item.id === chapter.id)?.isOpen ?? true,
+          lessons: chapter.lessons.map((lesson) => ({
+            id: lesson.id,
+            title: lesson.title,
+            order: lesson.position,
+          })),
+        })) || [];
+
+      return updatedItems;
+    });
+  }, [data]);
 
   function SortableItem({ children, className, id, data }: SortableItemProps) {
     const {
