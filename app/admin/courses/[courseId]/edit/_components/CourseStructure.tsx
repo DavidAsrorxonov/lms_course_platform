@@ -67,6 +67,8 @@ const CourseStructure = ({ data }: iAppProps) => {
 
   const [items, setItems] = useState(initialItems);
 
+  console.log(items);
+
   function SortableItem({ children, className, id, data }: SortableItemProps) {
     const {
       attributes,
@@ -184,6 +186,24 @@ const CourseStructure = ({ data }: iAppProps) => {
         ...lesson,
         order: index + 1,
       }));
+
+      const newItems = [...items];
+
+      newItems[chapterIndex] = {
+        ...chapterToUpdate,
+        lessons: updatedLessonsForState,
+      };
+
+      const previousItems = [...items];
+
+      setItems(newItems);
+
+      if (courseId) {
+        const lessonsToUpdate = updatedLessonsForState.map((lesson) => ({
+          id: lesson.id,
+          position: lesson.order,
+        }));
+      }
     }
   }
 
@@ -214,7 +234,7 @@ const CourseStructure = ({ data }: iAppProps) => {
         <CardHeader className="flex flex-row items-center justify-between border-b border-border">
           <CardTitle>Chapters</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-8">
           <SortableContext strategy={verticalListSortingStrategy} items={items}>
             {items.map((item) => (
               <SortableItem
