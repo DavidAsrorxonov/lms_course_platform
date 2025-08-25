@@ -96,14 +96,13 @@ const CourseStructure = ({ data }: iAppProps) => {
   function handleDragEnd(event: any) {
     const { active, over } = event;
 
-    if (active.id !== over.id) {
-      setItems((items) => {
-        const oldIndex = items.indexOf(active.id);
-        const newIndex = items.indexOf(over.id);
+    if (!over || !active.id === over.id) return;
 
-        return arrayMove(items, oldIndex, newIndex);
-      });
-    }
+    const activeId = active.id;
+    const overId = over.id;
+    const activeType = active.data.current.type as "chapter" | "lesson";
+    const overType = over.data.current.type as "chapter" | "lesson";
+    const courseId = data?.id;
   }
 
   const toggleChapter = (chapterId: string) => {
