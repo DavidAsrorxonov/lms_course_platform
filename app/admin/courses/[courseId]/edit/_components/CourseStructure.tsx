@@ -68,8 +68,6 @@ const CourseStructure = ({ data }: iAppProps) => {
 
   const [items, setItems] = useState(initialItems);
 
-  console.log(items);
-
   function SortableItem({ children, className, id, data }: SortableItemProps) {
     const {
       attributes,
