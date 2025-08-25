@@ -37,6 +37,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
 import { ReorderChapters, ReorderLessons } from "../actions";
+import NewChapterModal from "./NewChapterModal";
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -293,6 +294,7 @@ const CourseStructure = ({ data }: iAppProps) => {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between border-b border-border">
           <CardTitle>Chapters</CardTitle>
+          {data && <NewChapterModal courseId={data.id} />}
         </CardHeader>
         <CardContent className="space-y-8">
           <SortableContext strategy={verticalListSortingStrategy} items={items}>
