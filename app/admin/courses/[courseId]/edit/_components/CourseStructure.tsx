@@ -41,6 +41,7 @@ import NewChapterModal from "./NewChapterModal";
 import NewLessonModal from "./NewLessonModal";
 import DeleteLesson from "./DeleteLesson";
 import DeleteLessonModal from "./DeleteLesson";
+import DeleteChapterModal from "./DeleteChapterModal";
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -342,9 +343,12 @@ const CourseStructure = ({ data }: iAppProps) => {
                           </p>
                         </div>
 
-                        <Button size={"icon"} variant={"outline"}>
-                          <Trash2 className="size-4" />
-                        </Button>
+                        {data && (
+                          <DeleteChapterModal
+                            chapterId={item.id}
+                            courseId={data.id}
+                          />
+                        )}
                       </div>
 
                       <CollapsibleContent asChild>
