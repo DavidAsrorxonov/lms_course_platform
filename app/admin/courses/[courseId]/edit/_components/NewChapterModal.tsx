@@ -17,11 +17,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { tryCatch } from "@/hooks/try-catch";
 import { chapterSchema, ChapterSchemaInput } from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { CreateChapter } from "../actions";
+import { toast } from "sonner";
 
 const NewChapterModal = ({ courseId }: { courseId: string }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +39,22 @@ const NewChapterModal = ({ courseId }: { courseId: string }) => {
   });
 
   const onSubmit = async (values: ChapterSchemaInput) => {
-    startTransition(async () => {});
+    startTransition(async () => {
+      const { data: result, error } = await tryCatch(CreateChapter(values));
+
+      if (error) {
+        toast.error("An unexpected error occurred. Please try again");
+        return;
+      }
+
+      if (result.status === "success") {
+        toast.success(result.message);
+        form.reset();
+        setIsOpen(false);
+      } else if (result.status === "error") {
+        toast.error(result.message);
+      }
+    });
   };
 
   const handleOpenChange = (open: boolean) => {
@@ -60,7 +78,7 @@ const NewChapterModal = ({ courseId }: { courseId: string }) => {
         </DialogHeader>
 
         <Form {...form}>
-          <form className="space-y-8">
+          <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="name"
@@ -76,7 +94,9 @@ const NewChapterModal = ({ courseId }: { courseId: string }) => {
             />
 
             <DialogFooter>
-              <Button type="submit">Save Changes</Button>
+              <Button disabled={isPending} type="submit">
+                {isPending ? "Creating..." : "Create"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

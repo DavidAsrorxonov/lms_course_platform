@@ -174,6 +174,8 @@ export const ReorderChapters = async (
 export const CreateChapter = async (
   values: ChapterSchemaInput
 ): Promise<ApiResponse> => {
+  await requireAdmin();
+
   try {
     const result = chapterSchema.safeParse(values);
 
