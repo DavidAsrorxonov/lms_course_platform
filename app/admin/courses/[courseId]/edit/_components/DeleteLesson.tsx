@@ -9,11 +9,43 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { tryCatch } from "@/hooks/try-catch";
 import { Trash2 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
+import { DeleteLesson } from "../actions";
+import { toast } from "sonner";
 
-const DeleteLesson = () => {
+const DeleteLessonModal = ({
+  lessonId,
+  chapterId,
+  courseId,
+}: {
+  lessonId: string;
+  chapterId: string;
+  courseId: string;
+}) => {
   const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const onSubmit = async () => {
+    startTransition(async () => {
+      const { data: result, error } = await tryCatch(
+        DeleteLesson({ chapterId, courseId, lessonId })
+      );
+
+      if (error) {
+        toast.error("An unexpected error occurred. Please try again");
+        return;
+      }
+
+      if (result.status === "success") {
+        toast.success(result.message);
+        setOpen(false);
+      } else if (result.status === "error") {
+        toast.error(result.message);
+      }
+    });
+  };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -41,4 +73,4 @@ const DeleteLesson = () => {
   );
 };
 
-export default DeleteLesson;
+export default DeleteLessonModal;

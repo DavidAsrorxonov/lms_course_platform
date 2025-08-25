@@ -40,6 +40,7 @@ import { ReorderChapters, ReorderLessons } from "../actions";
 import NewChapterModal from "./NewChapterModal";
 import NewLessonModal from "./NewLessonModal";
 import DeleteLesson from "./DeleteLesson";
+import DeleteLessonModal from "./DeleteLesson";
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -377,7 +378,13 @@ const CourseStructure = ({ data }: iAppProps) => {
                                       </Link>
                                     </div>
 
-                                    <DeleteLesson />
+                                    {data && (
+                                      <DeleteLessonModal
+                                        lessonId={lesson.id}
+                                        chapterId={item.id}
+                                        courseId={data.id}
+                                      />
+                                    )}
                                   </div>
                                 )}
                               </SortableItem>
