@@ -1,13 +1,14 @@
 import { AdminGetCourses } from "@/app/data/admin/admin-get-courses";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import React from "react";
-import { AdminCourseCard } from "./_components/AdminCourseCard";
+import React, { Suspense } from "react";
+import {
+  AdminCourseCard,
+  AdminCourseCardSkeleton,
+} from "./_components/AdminCourseCard";
 import EmptyState from "@/components/general/EmptyState";
 
-const CoursesPage = async () => {
-  const data = await AdminGetCourses();
-
+const CoursesPage = () => {
   return (
     <>
       <div className="flex items-center justify-between">
@@ -16,7 +17,20 @@ const CoursesPage = async () => {
           Create Course
         </Link>
       </div>
+      <Suspense fallback={<AdminCourseCardSkeletonLayout />}>
+        <RenderCourses />
+      </Suspense>
+    </>
+  );
+};
 
+export default CoursesPage;
+
+export const RenderCourses = async () => {
+  const data = await AdminGetCourses();
+
+  return (
+    <>
       {data.length === 0 ? (
         <EmptyState
           href="/admin/courses/create"
@@ -35,4 +49,12 @@ const CoursesPage = async () => {
   );
 };
 
-export default CoursesPage;
+export const AdminCourseCardSkeletonLayout = () => {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-7">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <AdminCourseCardSkeleton key={index} />
+      ))}
+    </div>
+  );
+};
