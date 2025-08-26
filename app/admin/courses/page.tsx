@@ -3,6 +3,7 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 import { AdminCourseCard } from "./_components/AdminCourseCard";
+import EmptyState from "@/components/general/EmptyState";
 
 const CoursesPage = async () => {
   const data = await AdminGetCourses();
@@ -16,11 +17,20 @@ const CoursesPage = async () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-7">
-        {data.map((course) => (
-          <AdminCourseCard data={course} key={course.id} />
-        ))}
-      </div>
+      {data.length === 0 ? (
+        <EmptyState
+          href="/admin/courses/create"
+          title="No Courses Found"
+          description="Create a new course to get started."
+          buttonText="Create Course"
+        />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-7">
+          {data.map((course) => (
+            <AdminCourseCard data={course} key={course.id} />
+          ))}
+        </div>
+      )}
     </>
   );
 };
