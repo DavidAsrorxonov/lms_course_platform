@@ -20,12 +20,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { tryCatch } from "@/hooks/try-catch";
 import { lessonSchema, LessonSchemaInput } from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { updateLesson } from "../actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface iAppProps {
   data: AdminGetLessonType;
@@ -34,6 +38,8 @@ interface iAppProps {
 }
 
 const LessonForm = ({ chapterId, data, courseId }: iAppProps) => {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<LessonSchemaInput>({
     resolver: zodResolver(lessonSchema),
     defaultValues: {
@@ -45,6 +51,25 @@ const LessonForm = ({ chapterId, data, courseId }: iAppProps) => {
       videoKey: data.videoKey ?? undefined,
     },
   });
+
+  const onSubmit = async (values: LessonSchemaInput) => {
+    startTransition(async () => {
+      const { data: result, error } = await tryCatch(
+        updateLesson(values, data.id)
+      );
+
+      if (error) {
+        toast.error("An unexpected error occurred. Please try again");
+        return;
+      }
+
+      if (result.status === "success") {
+        toast.success(result.message);
+      } else if (result.status === "error") {
+        toast.error(result.message);
+      }
+    });
+  };
 
   return (
     <div>
@@ -68,7 +93,7 @@ const LessonForm = ({ chapterId, data, courseId }: iAppProps) => {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
                 control={form.control}
                 name="name"
@@ -133,7 +158,9 @@ const LessonForm = ({ chapterId, data, courseId }: iAppProps) => {
                 )}
               />
 
-              <Button type="submit">Save Lesson</Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending ? "Saving..." : "Save Lesson"}
+              </Button>
             </form>
           </Form>
         </CardContent>
