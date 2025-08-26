@@ -24,7 +24,13 @@ const RichTextEditor = ({ field }: { field: any }) => {
       field.onChange(JSON.stringify(editor.getJSON()));
     },
 
-    content: field.value ? JSON.parse(field.value) : "<p>Hello World</p>",
+    content: (() => {
+      try {
+        return field.value ? JSON.parse(field.value) : "<p>Hello World</p>";
+      } catch {
+        return field.value || "<p>Hello World</p>";
+      }
+    })(),
     immediatelyRender: false,
   });
 

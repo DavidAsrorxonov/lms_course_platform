@@ -29,9 +29,10 @@ interface UploaderState {
 interface iAppProps {
   value?: string;
   onChange?: (value: string) => void;
+  fileTypeAccepted: "image" | "video";
 }
 
-const Uploader = ({ onChange, value }: iAppProps) => {
+const Uploader = ({ onChange, value, fileTypeAccepted }: iAppProps) => {
   const fileUrl = useConstructUrl(value || "");
 
   const [fileState, setFileState] = useState<UploaderState>({
@@ -41,9 +42,9 @@ const Uploader = ({ onChange, value }: iAppProps) => {
     uploading: false,
     progress: 0,
     isDeleting: false,
-    fileType: "image",
+    fileType: fileTypeAccepted,
     key: value,
-    objectUrl: fileUrl,
+    objectUrl: value ? fileUrl : undefined,
   });
 
   const uploadFile = async (file: File) => {
@@ -61,7 +62,7 @@ const Uploader = ({ onChange, value }: iAppProps) => {
           fileName: file.name,
           contentType: file.type,
           size: file.size,
-          isImage: true,
+          isImage: fileTypeAccepted === "image" ? true : false,
         }),
       });
 
@@ -149,13 +150,13 @@ const Uploader = ({ onChange, value }: iAppProps) => {
           error: false,
           id: uuidv4(),
           isDeleting: false,
-          fileType: "image",
+          fileType: fileTypeAccepted,
         });
 
         uploadFile(file);
       }
     },
-    [fileState.objectUrl]
+    [fileState.objectUrl, uploadFile, fileTypeAccepted]
   );
 
   const handleRemoveFile = async () => {
@@ -199,7 +200,7 @@ const Uploader = ({ onChange, value }: iAppProps) => {
         progress: 0,
         objectUrl: undefined,
         error: false,
-        fileType: "image",
+        fileType: fileTypeAccepted,
         isDeleting: false,
         id: null,
       }));
