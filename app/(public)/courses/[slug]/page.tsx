@@ -22,6 +22,9 @@ import { CheckIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { enrollInCourseAction } from "./actions";
+import checkIfCourseBought from "@/app/data/user/user-is-enrolled";
+import Link from "next/link";
+import EnrollmentButton from "./_components/EnrollmentButton";
 
 type Params = Promise<{ slug: string }>;
 
@@ -31,6 +34,8 @@ const PublicSlugRoute = async ({ params }: { params: Params }) => {
   const course = await getOneCourse(slug);
 
   const thumbnailUrl = useConstructUrl(course.fileKey);
+
+  const isEnrolled = await checkIfCourseBought(course.id);
 
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 mt-5">
@@ -267,7 +272,7 @@ const PublicSlugRoute = async ({ params }: { params: Params }) => {
                 </ul>
               </div>
 
-              <Button className="w-full">Enroll Now!</Button>
+              <EnrollmentButton courseId={course.id} />
               <p className="mt-3 text-center text-xs text-muted-foreground">
                 30-day money-back guarantee
               </p>
