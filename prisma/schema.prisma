@@ -151,6 +151,7 @@ model Enrollment {
   id String @id @default(uuid())
 
   amount Int
+  status EnrollmentStatus @default(Pending)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -158,4 +159,10 @@ model Enrollment {
   courseId String
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
+}
+
+enum EnrollmentStatus {
+  Pending
+  Active
+  Cancelled
 }
