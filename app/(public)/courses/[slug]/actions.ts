@@ -2,9 +2,12 @@
 
 import { requireUser } from "@/app/data/user/require-user";
 import { prisma } from "@/lib/db";
+import { stripe } from "@/lib/stripe";
 import { ApiResponse } from "@/lib/types";
 
-export const enrollInCourseAction = async (courseId: string) => {
+export const enrollInCourseAction = async (
+  courseId: string
+): Promise<ApiResponse> => {
   const user = await requireUser();
 
   try {
@@ -40,7 +43,30 @@ export const enrollInCourseAction = async (courseId: string) => {
     if (userWithStripeCustomerId?.stripeCustomerId) {
       stripeCustomerId = userWithStripeCustomerId.stripeCustomerId;
     } else {
+      const customer = await stripe.customers.create({
+        email: user.email,
+        name: user.name,
+        metadata: {
+          userId: user.id,
+        },
+      });
+
+      stripeCustomerId = customer.id;
+
+      await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          stripeCustomerId: stripeCustomerId,
+        },
+      });
     }
+
+    return {
+      status: "success",
+      message: "Successfully enrolled in course and stripe customer created",
+    };
   } catch (error) {
     return {
       status: "error",

@@ -21,6 +21,7 @@ import {
 import { CheckIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { enrollInCourseAction } from "./actions";
 
 type Params = Promise<{ slug: string }>;
 
@@ -266,7 +267,14 @@ const PublicSlugRoute = async ({ params }: { params: Params }) => {
                 </ul>
               </div>
 
-              <Button className="w-full">Enroll Now!</Button>
+              <form
+                action={async () => {
+                  "use server";
+                  enrollInCourseAction(course.id);
+                }}
+              >
+                <Button className="w-full">Enroll Now!</Button>
+              </form>
               <p className="mt-3 text-center text-xs text-muted-foreground">
                 30-day money-back guarantee
               </p>
