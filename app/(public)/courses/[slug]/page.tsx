@@ -10,6 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useConstructUrl } from "@/hooks/use-construct-url";
 import {
+  IconBook,
   IconCategory,
   IconChartBar,
   IconChevronDown,
@@ -174,6 +175,67 @@ const PublicSlugRoute = async ({ params }: { params: Params }) => {
                     currency: "USD",
                   }).format(course.price)}
                 </span>
+              </div>
+
+              <div className="mb-6 space-y-3 rounded-lg bg-primary/10 p-4">
+                <h4 className="font-medium">What you will get:</h4>
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <IconClock className="size-4" />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium">Course Duration</p>
+                      <p className="text-sm text-muted-foreground">
+                        {course.duration} hours
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <IconChartBar className="size-4" />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium">Difficulty Level</p>
+                      <p className="text-sm text-muted-foreground">
+                        {course.level}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <IconCategory className="size-4" />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium">Course Category</p>
+                      <p className="text-sm text-muted-foreground">
+                        {course.category}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <IconBook className="size-4" />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium">Total Lessons</p>
+                      <p className="text-sm text-muted-foreground">
+                        {course.chapter.reduce(
+                          (total, chapter) => total + chapter.lessons.length,
+                          0
+                        ) || 0}{" "}
+                        lessons
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
