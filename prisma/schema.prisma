@@ -26,6 +26,7 @@ model User {
   accounts      Account[]
   courses       Course[]
   enrollment Enrollment[]
+  stripeCustomerId String? 
 
   role       String?
   banned     Boolean?
