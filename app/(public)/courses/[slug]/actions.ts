@@ -1,12 +1,22 @@
 "use server";
 
 import { requireUser } from "@/app/data/user/require-user";
+import arcjet, { fixedWindow } from "@/lib/arcjet";
 import { prisma } from "@/lib/db";
 import { env } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
 import { ApiResponse } from "@/lib/types";
+import { request } from "@arcjet/next";
 import { redirect } from "next/navigation";
 import Stripe from "stripe";
+
+const aj = arcjet.withRule(
+  fixedWindow({
+    mode: "LIVE",
+    window: "1m",
+    max: 5,
+  })
+);
 
 export const enrollInCourseAction = async (
   courseId: string
@@ -16,6 +26,26 @@ export const enrollInCourseAction = async (
   let checkoutUrl: string;
 
   try {
+    const req = await request();
+    const decision = await aj.protect(req, {
+      fingerprint: user.id,
+    });
+
+    if (decision.isDenied()) {
+      if (decision.reason.isRateLimit()) {
+        return {
+          status: "error",
+          message:
+            "Looks like you are a bot. If this is a mistake, please contact support.",
+        };
+      }
+
+      return {
+        status: "error",
+        message: "You have been blocked due to rate limiting",
+      };
+    }
+
     const course = await prisma.course.findUnique({
       where: {
         id: courseId,

@@ -267,14 +267,7 @@ const PublicSlugRoute = async ({ params }: { params: Params }) => {
                 </ul>
               </div>
 
-              <form
-                action={async () => {
-                  "use server";
-                  enrollInCourseAction(course.id);
-                }}
-              >
-                <Button className="w-full">Enroll Now!</Button>
-              </form>
+              <Button className="w-full">Enroll Now!</Button>
               <p className="mt-3 text-center text-xs text-muted-foreground">
                 30-day money-back guarantee
               </p>
