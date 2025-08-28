@@ -28,7 +28,9 @@ const aj = arcjet({
       allow: [
         "CATEGORY:SEARCH_ENGINE", // Google, Bing, etc
         "CATEGORY:MONITOR", // Uptime monitoring services
-        "CATEGORY:PREVIEW", // Link previews e.g. Slack, Discord
+        "CATEGORY:PREVIEW",
+        "STRIPE_WEBHOOK",
+        // Link previews e.g. Slack, Discord
         // Uncomment to allow these other common bot categories
         // See the full list at https://arcjet.com/bot-list
       ],

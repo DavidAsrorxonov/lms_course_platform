@@ -1,7 +1,7 @@
 import { getOneCourse } from "@/app/data/course/get-course";
 import RenderDescription from "@/components/rich-text-editor/RenderDescription";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Collapsible,
@@ -272,7 +272,19 @@ const PublicSlugRoute = async ({ params }: { params: Params }) => {
                 </ul>
               </div>
 
-              <EnrollmentButton courseId={course.id} />
+              {isEnrolled ? (
+                <Link
+                  href={"/dashboard"}
+                  className={buttonVariants({
+                    className: "w-full",
+                  })}
+                >
+                  Watch Course
+                </Link>
+              ) : (
+                <EnrollmentButton courseId={course.id} />
+              )}
+
               <p className="mt-3 text-center text-xs text-muted-foreground">
                 30-day money-back guarantee
               </p>
