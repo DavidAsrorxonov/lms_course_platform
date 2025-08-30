@@ -78,10 +78,20 @@ const CourseContent = ({ data }: iAppProps) => {
       />
 
       <div className="py-4 border-b">
-        <Button variant={"outline"} onClick={onSubmit} disabled={isPending}>
-          <CheckCircle className="mr-2 size-4 text-green-500" />
-          Mark as completed
-        </Button>
+        {data.lessonProgress.length > 0 ? (
+          <Button
+            variant={"outline"}
+            className="bg-green-500/10 text-green-500 hover:text-green-600"
+          >
+            <CheckCircle className="size-4 mr-2 text-green-500" />
+            Completed
+          </Button>
+        ) : (
+          <Button variant={"outline"} onClick={onSubmit} disabled={isPending}>
+            <CheckCircle className="mr-2 size-4 text-green-500" />
+            Mark as completed
+          </Button>
+        )}
       </div>
 
       <div className="space-y-3 pt-3">
