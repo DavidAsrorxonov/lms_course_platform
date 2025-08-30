@@ -1,5 +1,6 @@
 import { getLessonContent } from "@/app/data/course/get-lesson-content";
 import React from "react";
+import CourseContent from "./_components/CourseContent";
 
 type Params = Promise<{ lessonId: string }>;
 
@@ -8,11 +9,7 @@ const LessonContentPage = async ({ params }: { params: Params }) => {
 
   const data = await getLessonContent(lessonId);
 
-  return (
-    <div>
-      <h1>{data.title}</h1>
-    </div>
-  );
+  return <CourseContent data={data} />;
 };
 
 export default LessonContentPage;

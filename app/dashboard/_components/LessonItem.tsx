@@ -12,10 +12,11 @@ interface iAppProps {
     description: string | null;
   };
   slug: string;
+  isActive?: boolean;
 }
 
-const LessonItem = ({ lesson, slug }: iAppProps) => {
-  const completed: boolean = true;
+const LessonItem = ({ lesson, slug, isActive }: iAppProps) => {
+  const completed: boolean = false;
 
   return (
     <Link
@@ -25,7 +26,10 @@ const LessonItem = ({ lesson, slug }: iAppProps) => {
         className: cn(
           "w-full p-2.5 h-auto justify-start transition-all",
           completed &&
-            "bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700 hover:bg-green-200 dark:hover:bg-green-900/50 text-green-800 dark:text-green-200"
+            "bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700 hover:bg-green-200 dark:hover:bg-green-900/50 text-green-800 dark:text-green-200",
+          isActive &&
+            !completed &&
+            "bg-primary/10 dark:bg-primary/20 border-primary/50 hover:bg-primary/20 dark:hover:bg-primary/30 text-primary"
         ),
       })}
     >
