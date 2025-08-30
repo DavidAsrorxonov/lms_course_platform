@@ -9,11 +9,9 @@ import {
   type SlidingWindowRateLimitOptions,
   detectBot,
   protectSignup,
-  shield,
   slidingWindow,
 } from "@arcjet/next";
 import { NextRequest } from "next/server";
-import { env } from "@/lib/env";
 import arcjet from "@/lib/arcjet";
 
 const emailOptions = {

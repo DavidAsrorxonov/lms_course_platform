@@ -73,7 +73,7 @@ export const EditCourse = async (
       status: "success",
       message: "Course updated successfully",
     };
-  } catch (error) {
+  } catch {
     return {
       status: "error",
       message: "Failed to update course",
@@ -116,7 +116,7 @@ export const ReorderLessons = async (
       status: "success",
       message: "Lessons reordered successfully",
     };
-  } catch (error) {
+  } catch {
     return {
       status: "error",
       message: "Failed to reorder lessons",
@@ -158,7 +158,7 @@ export const ReorderChapters = async (
       status: "success",
       message: "Chapters reordered successfully",
     };
-  } catch (error) {
+  } catch {
     return {
       status: "error",
       message: "Failed to reorder chapters",
@@ -209,7 +209,7 @@ export const CreateChapter = async (
       status: "success",
       message: "Chapter created successfully",
     };
-  } catch (error) {
+  } catch {
     return {
       status: "error",
       message: "Failed to create chapter",
@@ -263,7 +263,7 @@ export const CreateLesson = async (
       status: "success",
       message: "Lesson created successfully",
     };
-  } catch (error) {
+  } catch {
     return {
       status: "error",
       message: "Failed to create lesson",
@@ -347,7 +347,7 @@ export const DeleteLesson = async ({
       status: "success",
       message: "Lesson deleted successfully",
     };
-  } catch (error) {
+  } catch {
     return {
       status: "error",
       message: "Failed to delete lesson",

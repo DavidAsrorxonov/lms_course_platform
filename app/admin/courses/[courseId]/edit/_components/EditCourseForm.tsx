@@ -13,7 +13,6 @@ import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { tryCatch } from "@/hooks/try-catch";
-import { CreateCourse } from "../../../create/actions";
 import { toast } from "sonner";
 import {
   Form,
@@ -26,7 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import slugify from "slugify";
-import { Loader2, PlusIcon, Sparkle } from "lucide-react";
+import { Loader2, Sparkle } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import RichTextEditor from "@/components/rich-text-editor/Editor";
 import Uploader from "@/components/file-uploader/Uploader";

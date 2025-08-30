@@ -29,7 +29,6 @@ import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { updateLesson } from "../actions";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 interface iAppProps {
   data: AdminGetLessonType;

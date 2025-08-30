@@ -1,7 +1,7 @@
 import { getOneCourse } from "@/app/data/course/get-course";
 import RenderDescription from "@/components/rich-text-editor/RenderDescription";
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Collapsible,
@@ -21,7 +21,6 @@ import {
 import { CheckIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import { enrollInCourseAction } from "./actions";
 import checkIfCourseBought from "@/app/data/user/user-is-enrolled";
 import Link from "next/link";
 import EnrollmentButton from "./_components/EnrollmentButton";

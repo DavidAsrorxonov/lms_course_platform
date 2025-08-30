@@ -10,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useSignOut } from "@/hooks/use-signout";
-import { authClient } from "@/lib/auth-client";
 import {
   BookOpen,
   ChevronDownIcon,

@@ -31,7 +31,6 @@ import {
   ChevronRight,
   FileText,
   GripVertical,
-  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -39,7 +38,6 @@ import { toast } from "sonner";
 import { ReorderChapters, ReorderLessons } from "../actions";
 import NewChapterModal from "./NewChapterModal";
 import NewLessonModal from "./NewLessonModal";
-import DeleteLesson from "./DeleteLesson";
 import DeleteLessonModal from "./DeleteLesson";
 import DeleteChapterModal from "./DeleteChapterModal";
 

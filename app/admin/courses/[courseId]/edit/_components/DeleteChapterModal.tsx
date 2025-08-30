@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { tryCatch } from "@/hooks/try-catch";
 import { Trash2 } from "lucide-react";
 import React, { useState, useTransition } from "react";
-import { DeleteChapter, DeleteLesson } from "../actions";
+import { DeleteChapter } from "../actions";
 import { toast } from "sonner";
 
 const DeleteChapterModal = ({
