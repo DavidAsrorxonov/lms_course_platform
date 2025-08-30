@@ -1,15 +1,24 @@
+"use client";
+
 import { LessonContentType } from "@/app/data/course/get-lesson-content";
 import RenderDescription from "@/components/rich-text-editor/RenderDescription";
 import { Button } from "@/components/ui/button";
+import { tryCatch } from "@/hooks/try-catch";
 import { useConstructUrl } from "@/hooks/use-construct-url";
 import { BookIcon, CheckCircle } from "lucide-react";
-import React from "react";
+import React, { useTransition } from "react";
+import { MarkLessonAsCompleted } from "../actions";
+import { toast } from "sonner";
+import { useConfetti } from "@/hooks/use-confetti";
 
 interface iAppProps {
   data: LessonContentType;
 }
 
 const CourseContent = ({ data }: iAppProps) => {
+  const [isPending, startTransition] = useTransition();
+  const { triggerConfetti } = useConfetti();
+
   const VideoPlayer = ({
     thumbnailKey,
     videoKey,
@@ -41,6 +50,26 @@ const CourseContent = ({ data }: iAppProps) => {
     );
   };
 
+  function onSubmit() {
+    startTransition(async () => {
+      const { data: result, error } = await tryCatch(
+        MarkLessonAsCompleted(data.id, data.Chapter.Course.slug)
+      );
+
+      if (error) {
+        toast.error("An unexpected error occurred");
+        return;
+      }
+
+      if (result.status === "success") {
+        toast.success(result.message);
+        triggerConfetti();
+      } else if (result.status === "error") {
+        toast.error(result.message);
+      }
+    });
+  }
+
   return (
     <div className="flex flex-col h-full bg-background pl-6">
       <VideoPlayer
@@ -49,9 +78,9 @@ const CourseContent = ({ data }: iAppProps) => {
       />
 
       <div className="py-4 border-b">
-        <Button variant={"outline"}>
+        <Button variant={"outline"} onClick={onSubmit} disabled={isPending}>
           <CheckCircle className="mr-2 size-4 text-green-500" />
-          Mark as Completed
+          Mark as completed
         </Button>
       </div>
 

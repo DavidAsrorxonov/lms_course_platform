@@ -20,6 +20,11 @@ export const getLessonContent = async (lessonId: string) => {
       Chapter: {
         select: {
           courseId: true,
+          Course: {
+            select: {
+              slug: true,
+            },
+          },
         },
       },
     },
