@@ -9,7 +9,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
-import { useConstructUrl } from "@/hooks/use-construct-url";
+import { constructUrl } from "@/hooks/construct-url";
 import {
   IconBook,
   IconCategory,
@@ -32,7 +32,7 @@ const PublicSlugRoute = async ({ params }: { params: Params }) => {
 
   const course = await getOneCourse(slug);
 
-  const thumbnailUrl = useConstructUrl(course.fileKey);
+  const thumbnailUrl = constructUrl(course.fileKey);
 
   const isEnrolled = await checkIfCourseBought(course.id);
 

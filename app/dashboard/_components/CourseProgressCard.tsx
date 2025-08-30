@@ -6,7 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useConstructUrl } from "@/hooks/use-construct-url";
+import { constructUrl } from "@/hooks/construct-url";
 import { useCourseProgress } from "@/hooks/use-course-progress";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,7 +17,7 @@ interface iAppProps {
 }
 
 const CourseProgressCard = ({ data }: iAppProps) => {
-  const thumbnailUrl = useConstructUrl(data.Course.fileKey);
+  const thumbnailUrl = constructUrl(data.Course.fileKey);
 
   const { totalLessons, completedLessons, progressPercentage } =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

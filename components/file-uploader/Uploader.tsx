@@ -12,7 +12,7 @@ import {
 } from "./RenderState";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
-import { useConstructUrl } from "@/hooks/use-construct-url";
+import { useConstructUrl } from "@/hooks/construct-url";
 
 interface UploaderState {
   id: string | null;

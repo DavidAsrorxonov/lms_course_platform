@@ -4,7 +4,7 @@ import { LessonContentType } from "@/app/data/course/get-lesson-content";
 import RenderDescription from "@/components/rich-text-editor/RenderDescription";
 import { Button } from "@/components/ui/button";
 import { tryCatch } from "@/hooks/try-catch";
-import { useConstructUrl } from "@/hooks/use-construct-url";
+import { useConstructUrl } from "@/hooks/construct-url";
 import { BookIcon, CheckCircle } from "lucide-react";
 import React, { useTransition } from "react";
 import { MarkLessonAsCompleted } from "../actions";

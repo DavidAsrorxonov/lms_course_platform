@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useConstructUrl } from "@/hooks/use-construct-url";
+import { useConstructUrl } from "@/hooks/construct-url";
 import { School, TimerIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
