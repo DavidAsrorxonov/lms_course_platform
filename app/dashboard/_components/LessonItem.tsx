@@ -42,10 +42,18 @@ const LessonItem = ({ lesson, slug, isActive }: iAppProps) => {
           ) : (
             <div
               className={cn(
-                "size-5 rounded-full border-2 bg-background flex justify-center items-center"
+                "size-5 rounded-full border-2 bg-background flex justify-center items-center",
+                isActive
+                  ? "border-primary bg-primary/10 dark:bg-primary/20"
+                  : "border-muted-foreground/60"
               )}
             >
-              <Play className={cn("size-2.5 fill-current")} />
+              <Play
+                className={cn(
+                  "size-2.5 fill-current",
+                  isActive ? "text-primary" : "text-muted-foreground"
+                )}
+              />
             </div>
           )}
         </div>
@@ -54,7 +62,11 @@ const LessonItem = ({ lesson, slug, isActive }: iAppProps) => {
           <p
             className={cn(
               "text-xs font-medium truncate",
-              completed && "text-green-800 dark:text-green-200"
+              completed
+                ? "text-green-800 dark:text-green-200"
+                : isActive
+                ? "text-primary font-semibold"
+                : "text-foreground"
             )}
           >
             {lesson.position}. {lesson.title}
@@ -62,6 +74,12 @@ const LessonItem = ({ lesson, slug, isActive }: iAppProps) => {
           {completed && (
             <p className="text-[10px] text-green-700 dark:text-green-300 font-medium">
               Completed
+            </p>
+          )}
+
+          {isActive && !completed && (
+            <p className="text-[10px] text-primary font-medium">
+              Currently watching
             </p>
           )}
         </div>
