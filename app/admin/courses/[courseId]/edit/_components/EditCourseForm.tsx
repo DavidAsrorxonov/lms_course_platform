@@ -66,7 +66,7 @@ const EditCourseForm = ({ data }: iAppProps) => {
   function onSubmit(values: CourseSchemaInput) {
     startTransition(async () => {
       const { data: result, error } = await tryCatch(
-        // @ts-ignore
+        // @ts-expect-error: EditCourse expects stricter props
         EditCourse(values, data.id)
       );
 

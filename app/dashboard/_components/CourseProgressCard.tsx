@@ -18,7 +18,9 @@ interface iAppProps {
 
 const CourseProgressCard = ({ data }: iAppProps) => {
   const thumbnailUrl = useConstructUrl(data.Course.fileKey);
+
   const { totalLessons, completedLessons, progressPercentage } =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     useCourseProgress({ courseData: data.Course as any });
 
   return (

@@ -118,6 +118,7 @@ const CourseStructure = ({ data }: iAppProps) => {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function handleDragEnd(event: any) {
     const { active, over } = event;
 

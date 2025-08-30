@@ -59,7 +59,7 @@ export const RenderRecentCourses = async () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {data.map((course) => (
-        // @ts-ignore
+        // @ts-expect-error: AdminCourseCard expects stricter props
         <AdminCourseCard key={course.id} data={course} />
       ))}
     </div>
