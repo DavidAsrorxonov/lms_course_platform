@@ -1,0 +1,71 @@
+import "server-only";
+import { requireUser } from "../user/require-user";
+import { prisma } from "@/lib/db";
+import { notFound } from "next/navigation";
+
+export const getCourseSidebarData = async (slug: string) => {
+  const session = await requireUser();
+
+  const course = await prisma.course.findUnique({
+    where: {
+      slug: slug,
+    },
+    select: {
+      id: true,
+      title: true,
+      fileKey: true,
+      duration: true,
+      level: true,
+      category: true,
+      slug: true,
+      chapter: {
+        orderBy: {
+          position: "asc",
+        },
+        select: {
+          id: true,
+          title: true,
+          position: true,
+          lessons: {
+            orderBy: {
+              position: "asc",
+            },
+            select: {
+              id: true,
+              title: true,
+              position: true,
+              description: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!course) {
+    console.log("Course not found");
+    return notFound();
+  }
+
+  const enrollment = await prisma.enrollment.findUnique({
+    where: {
+      userId_courseId: {
+        userId: session.id,
+        courseId: course.id,
+      },
+    },
+  });
+
+  if (!enrollment || enrollment.status !== "Active") {
+    console.log("Enrollment not found");
+    return notFound();
+  }
+
+  return {
+    course,
+  };
+};
+
+export type CourseSidebarDataType = Awaited<
+  ReturnType<typeof getCourseSidebarData>
+>;
